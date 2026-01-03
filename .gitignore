@@ -1,0 +1,7 @@
+!.gitignore
+!.gitattributes
+.env
+credentials.json
+venv/
+.venv/
+__pycache__/

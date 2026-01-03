@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Classeviva2GCal - Sincronizzazione Automatica{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="text-center my-5 py-5">
+        <!-- Logo Image -->
+        <img src="/static/logo.png" alt="Classeviva2GCal Logo" class="mb-4" style="max-width: 800px;">
+        <h1 class="display-4 mb-3">Classeviva2GCal</h1>
+        <p class="lead text-muted">Sincronizza automaticamente le verifiche e interrogazioni da Classeviva a Google Calendar</p>
+        <div class="mt-4">
+            <a href="/register" class="btn btn-primary btn-lg me-2">Inizia Ora</a>
+            <a href="#come-funziona" class="btn btn-outline-secondary btn-lg">Come Funziona</a>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row my-5 py-5" id="come-funziona">
+        <div class="col-md-4 text-center mb-4">
+            <div class="feature-icon bg-primary bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-cloud-arrow-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M7.646 10.854a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 9.293V5.5a.5.5 0 0 0-1 0v3.793L6.354 8.146a.5.5 0 1 0-.708.708l2 2z"/>
+                    <path d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z"/>
+                </svg>
+            </div>
+            <h3>Automatico</h3>
+            <p>Sincronizzazione automatica ogni giorno a mezzanotte. Non devi fare nulla dopo la registrazione.</p>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <div class="feature-icon bg-primary bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-calendar-check" viewBox="0 0 16 16">
+                    <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+                </svg>
+            </div>
+            <h3>Sempre Aggiornato</h3>
+            <p>Verifiche e interrogazioni sincronizzate direttamente sul tuo Google Calendar con promemoria.</p>
+        </div>
+        <div class="col-md-4 text-center mb-4">
+            <div class="feature-icon bg-primary bg-gradient text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-shield-check" viewBox="0 0 16 16">
+                    <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z"/>
+                    <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                </svg>
+            </div>
+            <h3>Sicuro</h3>
+            <p>I tuoi dati sono protetti e utilizzati solo per la sincronizzazione. Nessuna condivisione con terze parti.</p>
+        </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div class="bg-light rounded p-5 my-5">
+        <h2 class="text-center mb-4">Come Funziona</h2>
+        <div class="row">
+            <div class="col-md-3 text-center mb-3">
+                <div class="h1 text-primary">1</div>
+                <h5>Registrati</h5>
+                <p class="small">Inserisci le credenziali Classeviva e l'ID del tuo Google Calendar</p>
+            </div>
+            <div class="col-md-3 text-center mb-3">
+                <div class="h1 text-primary">2</div>
+                <h5>Autorizza Google</h5>
+                <p class="small">Concedi i permessi per accedere al tuo calendario Google</p>
+            </div>
+            <div class="col-md-3 text-center mb-3">
+                <div class="h1 text-primary">3</div>
+                <h5>Sincronizzazione</h5>
+                <p class="small">Il sistema sincronizza automaticamente ogni notte</p>
+            </div>
+            <div class="col-md-3 text-center mb-3">
+                <div class="h1 text-primary">4</div>
+                <h5>Ricevi Notifiche</h5>
+                <p class="small">Promemoria automatici un giorno prima di verifiche e interrogazioni</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="text-center my-5 py-5">
+        <h2 class="mb-4">Pronto per iniziare?</h2>
+        <p class="lead mb-4">Registrati ora e non perdere mai più una verifica o interrogazione</p>
+        <a href="/register" class="btn btn-primary btn-lg">Registrati Gratuitamente</a>
+    </div>
+
+    <!-- Footer Links -->
+    <footer class="border-top pt-4 pb-5 mt-5">
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start mb-3">
+                <p class="text-muted">&copy; 2026 Avoprogetti. Tutti i diritti riservati.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <a href="/terms" class="text-decoration-none me-3">Termini di Servizio</a>
+                <a href="/privacy" class="text-decoration-none">Privacy</a>
+            </div>
+        </div>
+    </footer>
+</div>
+{% endblock %}
