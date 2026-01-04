@@ -51,6 +51,8 @@ MAX_TRIES=5
 TIMEZONE=Europe/Rome
 AUTH_CODE=supersecretcode
 
+TIME_SYNC=00:00
+
 DB_MODE=mysql # O sqlite o mysql
 DB_DIR=classeviva2gcal.db # Solo se DB_MODE=sqlite
 
@@ -119,6 +121,11 @@ L'applicazione sarà disponibile su `http://localhost:5000`
 | `MAX_TRIES` | Numero massimo di tentativi di sincronizzazione | ❌ |
 | `TIMEZONE` | Fuso orario (es. Europe/Rome) | ❌ |
 | `AUTH_CODE` | Codice per Basic Auth (opzionale) | ❌ |
+
+### Configurazione del Daemon
+| Variabile | Descrizione | Obbligatorio |
+|-----------|-------------|--------------|
+| `TIME_SYNC` | A che ora della giornata il server farà partire il daemon, nel formato hh:mm | ✅ |
 
 ### Database Configuration
 | Variabile | Descrizione | Obbligatorio |

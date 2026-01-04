@@ -61,7 +61,7 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
                 else:
                     time.sleep(1)
                     i += 1
-                if i == config['MAX_TRIES']:
+                if i == int(config['MAX_TRIES']):
                     raise Exception('Timeout')
             except Exception as e:
                 print(e)
