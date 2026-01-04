@@ -154,7 +154,7 @@ scheduler.add_job(
     name='Sincronizza agenda da Classeviva a Google Calendar'
 )
 scheduler.start()
-print("Scheduler avviato. Sincronizzazione programmata ogni mezzanotte.")
+print("[CLASSEVIVA2GCAL_LOG]: Scheduler started. Daemon will start at " + config.get('TIME_SYNC') + " everyday.")
 
 if __name__ == '__main__':
     # run flask app (solo in modalità standalone, non con uwsgi)
