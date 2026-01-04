@@ -1,3 +1,5 @@
+<img width="930" height="497" alt="logo" src="https://github.com/user-attachments/assets/79ee3e09-9dcd-4dc2-8cd7-ae8e8b161ea0" />
+
 # Classeviva2GCal
 
 Una web application che sincronizza automaticamente gli eventi dall'agenda di Classeviva (piattaforma scolastica per studenti) a Google Calendar.
