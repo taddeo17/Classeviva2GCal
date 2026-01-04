@@ -148,8 +148,8 @@ scheduler = BackgroundScheduler()
 scheduler.add_job(
     func=classeviva_listener.sincronizza_agenda,
     trigger="cron",
-    hour=int(config.get('TIME_SYNC')..split(':')[0]),
-    minute=int(config.get('TIME_SYNC')..split(':')[1]),
+    hour=int(config.get('TIME_SYNC').split(':')[0]),
+    minute=int(config.get('TIME_SYNC').split(':')[1]),
     id='sincronizza_agenda_job',
     name='Sincronizza agenda da Classeviva a Google Calendar'
 )
