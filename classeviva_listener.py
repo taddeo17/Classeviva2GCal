@@ -201,12 +201,8 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
                 db.commit()
                 print('[CLASSEVIVA2GCAL_LOG]: Google Calendar Event created: %s' % (event.get('htmlLink')))
             except HttpError as error:
-<<<<<<< HEAD
                 print(f"Errore durante la creazione dell'evento: {error}")
 
 
 if __name__ == "__main__":
     sincronizza_agenda()
-=======
-                print(f"[CLASSEVIVA2GCAL_LOG]: ERROR: Exception while creating evente in Google Calendar: {error}")
->>>>>>> 6b19c1c63b0f5a1e3957ac603db5da18a77eb013
