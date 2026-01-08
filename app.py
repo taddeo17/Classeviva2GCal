@@ -72,6 +72,10 @@ def register_form():
     classeviva_pwd = request.form.get('classeviva_pwd')
     calendar_id = request.form.get('calendar_id')
 
+    if(request.form.get('email')):
+        # campo nascosto compilato da bot
+        return 'Errore nel submit del form', 400
+
     if not all([classeviva_user, classeviva_pwd, calendar_id]):
         return 'Dati mancanti', 400
 

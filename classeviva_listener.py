@@ -86,6 +86,13 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
                 keywords = json.load(f)["keywords"]
 
             for data in dati:
+                # Recupero la data e controllo che sia un evento odierno o futuro
+
+                dateCheck = _as_date_string(data['evtDatetimeBegin'])
+
+                if dateCheck < _as_date_string(datetime.datetime.now().isoformat()):
+                    continue
+                
                 if any(keyword in data['notes'].lower() for keyword in keywords):
                     if "interrogazione" in data['notes'].lower() or "orale" in data['notes'].lower():
                         data['title'] = "Interrogazione"
@@ -192,3 +199,7 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
                 print('Evento creato: %s' % (event.get('htmlLink')))
             except HttpError as error:
                 print(f"Errore durante la creazione dell'evento: {error}")
+
+
+if __name__ == "__main__":
+    sincronizza_agenda()
