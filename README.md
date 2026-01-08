@@ -1,3 +1,5 @@
+<img width="930" height="497" alt="logo" src="https://github.com/user-attachments/assets/79ee3e09-9dcd-4dc2-8cd7-ae8e8b161ea0" />
+
 # Classeviva2GCal
 
 Una web application che sincronizza automaticamente gli eventi dall'agenda di Classeviva (piattaforma scolastica per studenti) a Google Calendar.
@@ -50,6 +52,8 @@ PORT=5000
 MAX_TRIES=5
 TIMEZONE=Europe/Rome
 AUTH_CODE=supersecretcode
+
+TIME_SYNC=00:00
 
 DB_MODE=mysql # O sqlite o mysql
 DB_DIR=classeviva2gcal.db # Solo se DB_MODE=sqlite
@@ -119,6 +123,11 @@ L'applicazione sarà disponibile su `http://localhost:5000`
 | `MAX_TRIES` | Numero massimo di tentativi di sincronizzazione | ❌ |
 | `TIMEZONE` | Fuso orario (es. Europe/Rome) | ❌ |
 | `AUTH_CODE` | Codice per Basic Auth (opzionale) | ❌ |
+
+### Configurazione del Daemon
+| Variabile | Descrizione | Obbligatorio |
+|-----------|-------------|--------------|
+| `TIME_SYNC` | A che ora della giornata il server farà partire il daemon, nel formato hh:mm | ✅ |
 
 ### Database Configuration
 | Variabile | Descrizione | Obbligatorio |

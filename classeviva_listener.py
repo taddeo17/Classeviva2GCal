@@ -33,7 +33,7 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
         inizio_anno = f"{date.year - 1}-09-10"
         fine_anno = f"{date.year}-06-30"
     else:
-        print("Mese estivo, nessuna sincronizzazione effettuata.")
+        print("[CLASSEVIVA2GCAL_LOG]: Mese estivo, nessuna sincronizzazione effettuata.")
         return
         # Qui il daemon deve bloccarsi
 
@@ -53,22 +53,22 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
         i = 1
         while True:
             try:
-                print("Connessione in corso...")
+                print("[CLASSEVIVA2GCAL_LOG]: Connecting to Classeviva service...")
                 utente()
                 if utente.connesso:
-                    print("Connesso")
+                    print("[CLASSEVIVA2GCAL_LOG]: Connected succesfully to Classeviva user: " + row[2])
                     break
                 else:
                     time.sleep(1)
                     i += 1
-                if i == config['MAX_TRIES']:
+                if i == int(config['MAX_TRIES']):
                     raise Exception('Timeout')
             except Exception as e:
                 print(e)
                 break
 
         if utente.connesso is False:
-            print("Impossibile connettersi a Classeviva, salto l'utente.")
+            print("[CLASSEVIVA2GCAL_LOG]: Unable to connect to Classeviva, skipping user: " + row[2])
             continue
 
 
@@ -78,7 +78,7 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
             while dati is None:
                 dati = await utente.agenda_da_a(inizio, fine)
             
-            print("Filtraggio degli eventi...")
+            print("[CLASSEVIVA2GCAL_LOG]: Filtering Classeviva events...")
 
             # Recupero il file delle keywords
             keywords = []
@@ -87,12 +87,12 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
 
             for data in dati:
                 # Recupero la data e controllo che sia un evento odierno o futuro
-
                 dateCheck = _as_date_string(data['evtDatetimeBegin'])
 
                 if dateCheck < _as_date_string(datetime.datetime.now().isoformat()):
                     continue
                 
+                print("[CLASSEVIVA2GCAL_LOG]: Using keywords.json for any match...")
                 if any(keyword in data['notes'].lower() for keyword in keywords):
                     if "interrogazione" in data['notes'].lower() or "orale" in data['notes'].lower():
                         data['title'] = "Interrogazione"
@@ -100,17 +100,19 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
                         data['title'] = "Verifica"
                     ver_interr.append(data)
 
+            print("[CLASSEVIVA2GCAL_LOG]: Found " + str(len(data)) + "Entry/ies.")
+
         asyncio.run(recupera_agenda(utente, inizio_anno, fine_anno))
 
-        print("Sincronizzazione degli eventi al database...")
+        print("[CLASSEVIVA2GCAL_LOG]: Syncing events to Database...")
         for data in ver_interr:
             data_str = _as_date_string(data['evtDatetimeBegin'])
             db.cur_execute("SELECT * FROM agenda WHERE classeviva_id = ?", (str(data['evtId']),))
             if(db.fetchone() is None):
                 db.cur_execute("INSERT INTO agenda (classeviva_id, data, autore, titolo, note, gcal_id) VALUES (?, ?, ?, ?, ?, ?)", (data['evtId'], data_str, data['authorName'], data['title'], data['notes'], row[5]))
                 db.commit()
-                print(f"Evento {data['evtId']} inserito")
-        print("Eventi sincronizzati.")
+                print(f"[CLASSEVIVA2GCAL_LOG]: Event {data['evtId']} saved.")
+        print("[CLASSEVIVA2GCAL_LOG]: The database is up to date.")
 
         """
         ##############################
@@ -118,7 +120,7 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
         ##############################
         """
 
-        print("Connessione a Google Calendar...")
+        print("[CLASSEVIVA2GCAL_LOG]: Connecting to Google Calendar...")
         SCOPES = ['https://www.googleapis.com/auth/calendar']
 
         cred = None
@@ -135,23 +137,24 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
             # Token stored ma non valido/assente: lo azzeriamo e passiamo oltre
             db.cur_execute("UPDATE accounts SET g_token = NULL WHERE id = ?;", (row[0],))
             db.commit()
-            print("Token non valido o senza refresh_token; eliminato e passo all'utente successivo.")
+            print("[CLASSEVIVA2GCAL_LOG]: Token not valid or no refresh_token available; Skipping user: " + row[2])
             continue
 
         cred = Credentials.from_authorized_user_info(token_info, SCOPES)
         
         if not cred or not cred.valid:
             if cred and cred.expired and cred.refresh_token:
+                print("[CLASSEVIVA2GCAL_LOG]: Requesting new access Token with the Refresh Token for user: " + row[2])
                 cred.refresh(Request())
             else:
-                print("L'utente non ha un token valido, elimino il token all'utente.")
+                print("[CLASSEVIVA2GCAL_LOG]: The user " + row[2] + " has not a valid token, deleting it...")
                 db.cur_execute("UPDATE accounts SET g_token = NULL WHERE id = ?;", (row[0],))
                 db.commit()
                 continue
                 
             db.cur_execute("UPDATE accounts SET g_token = ? WHERE id = ?;", (cred.to_json(), row[0]))
             db.commit()
-        print("Credenziali ottenute con successo.")
+        print("[CLASSEVIVA2GCAL_LOG]: Google Access Token valid for user: " + row[2])
         service = build('calendar', 'v3', credentials=cred)
         
         db.cur_execute("SELECT * FROM agenda WHERE g_inserted = 0 AND gcal_id = ? AND classeviva_id IS NOT NULL AND data >= DATE(?);", (row[5], str(date.year) + "-" + str(date.month) + "-" + str(date.day)))
@@ -188,7 +191,7 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
                     status_code = getattr(status, 'status', None)
                 
                 if status_code in (403, 404):
-                    print("Errore: l'account che stai usando non ha accesso a questo calendario (HTTP {}).")
+                    print("[CLASSEVIVA2GCAL_LOG]: ERROR: The credentials are not valid for user: " + row[2] + " (HTTP {}).")
                     continue
                 raise err
 
@@ -196,10 +199,14 @@ def sincronizza_agenda(): # Funzione per la sincronizzazione dell'agenda di clas
                 event = service.events().insert(calendarId=evento[7], body=event).execute()
                 db.cur_execute("UPDATE agenda SET g_inserted = 1 WHERE id = ?;", (evento[0],))
                 db.commit()
-                print('Evento creato: %s' % (event.get('htmlLink')))
+                print('[CLASSEVIVA2GCAL_LOG]: Google Calendar Event created: %s' % (event.get('htmlLink')))
             except HttpError as error:
+<<<<<<< HEAD
                 print(f"Errore durante la creazione dell'evento: {error}")
 
 
 if __name__ == "__main__":
     sincronizza_agenda()
+=======
+                print(f"[CLASSEVIVA2GCAL_LOG]: ERROR: Exception while creating evente in Google Calendar: {error}")
+>>>>>>> 6b19c1c63b0f5a1e3957ac603db5da18a77eb013
